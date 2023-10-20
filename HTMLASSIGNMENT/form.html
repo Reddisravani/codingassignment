@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Survey Form</title>
+    <style>
+        body{
+            background-color: blue
+        }
+
+        form{
+            border: 2px solid black;
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+            background-color: white
+        }
+        input{
+            float: right;
+        }
+        h1{
+            text-align: center;
+            color:aliceblue
+           
+        }
+        button{
+            background-color: blue;
+            color:aliceblue
+        }
+    </style>
+</head>
+<body>
+    <h1>SurveyForm</h1>
+    <form id="surveyForm">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" required>
+        <span id="firstNameError" class="error-message"></span><br><br>
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" required>
+        <span id="lastNameError" class="error-message"></span><br><br>
+
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" required>
+        <span id="dobError" class="error-message"></span><br><br>
+
+        <label for="country">Country:</label>
+        <select id="country" required>
+            <option value="">Select a country</option>
+            <option value="India">India</option>
+            <option value="USA">USA</option>
+            <option value="Canada">Canada</option>
+        </select>
+        <span id="countryError" class="error-message"></span><br><br>
+
+        <label>Gender:</label><br><br>
+        <input type="checkbox" id="male"> Male
+        <input type="checkbox" id="female"> Female
+        <input type="checkbox" id="other"> Other
+        <span id="genderError" class="error-message"></span><br><br>
+
+        <label for="profession">Profession:</label>
+        <input type="text" id="profession" required>
+        <span id="professionError" class="error-message"></span><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
+        <span id="emailError" class="error-message"></span><br><br>
+
+        <label for="mobile">Mobile Number:</label>
+        <input type="tel" id="mobile" required>
+        <span id="mobileError" class="error-message"></span><br><br>
+
+        <button type="button" id="submitBtn">Submit</button>
+        <button type="button" id="resetBtn">Reset</button>
+    </form>
+
+    <div id="popup" style="display: none;">
+        <h2>Survey Form Submission</h2>
+        <p id="popupContent"></p>
+        <button type="button" id="closePopup">Close</button>
+    </div>
+
+    <style>
+        .error-message {
+            color: red;
+        }
+    </style>
+
+    <script>
+        const form = document.getElementById('surveyForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const popup = document.getElementById('popup');
+        const closePopup = document.getElementById('closePopup');
+        const popupContent = document.getElementById('popupContent');
+
+        submitBtn.addEventListener('click', function () {
+            const firstName = document.getElementById('firstName').value;
+            const firstNameError = document.getElementById('firstNameError');
+            const lastName = document.getElementById('lastName').value;
+            const lastNameError = document.getElementById('lastNameError');
+            const dob = document.getElementById('dob').value;
+            const dobError = document.getElementById('dobError');
+            const country = document.getElementById('country').value;
+            const countryError = document.getElementById('countryError');
+            const gender = [];
+            if (document.getElementById('male').checked) {
+                gender.push("Male");
+            }
+            if (document.getElementById('female').checked) {
+                gender.push("Female");
+            }
+            if (document.getElementById('other').checked) {
+                gender.push("Other");
+            }
+            const genderError = document.getElementById('genderError');
+            const profession = document.getElementById('profession').value;
+            const professionError = document.getElementById('professionError');
+            const email = document.getElementById('email').value;
+            const emailError = document.getElementById('emailError');
+            const mobile = document.getElementById('mobile').value;
+            const mobileError = document.getElementById('mobileError');
+            let isValid = true;
+
+            if (!firstName) {
+                firstNameError.textContent = 'Please fill this field.';
+                isValid = false;
+            } else {
+                firstNameError.textContent = '';
+            }
+
+            if (!lastName) {
+                lastNameError.textContent = 'Please fill this field.';
+                isValid = false;
+            } else {
+                lastNameError.textContent = '';
+            }
+
+            if (!dob) {
+                dobError.textContent = 'Please fill this field.';
+                isValid = false;
+            } else {
+                dobError.textContent = '';
+            }
+
+            if (country === '') {
+                countryError.textContent = 'Please select a country.';
+                isValid = false;
+            } else {
+                countryError.textContent = '';
+            }
+
+            if (gender.length === 0) {
+                genderError.textContent = 'Please select a gender.';
+                isValid = false;
+            } else {
+                genderError.textContent = '';
+            }
+
+            if (!profession) {
+                professionError.textContent = 'Please fill this field.';
+                isValid = false;
+            } else {
+                professionError.textContent = '';
+            }
+
+            if (!email) {
+                emailError.textContent = 'Please fill this field.';
+                isValid = false;
+            } else {
+                emailError.textContent = '';
+            }
+
+            if (!mobile) {
+                mobileError.textContent = 'Please fill this field.';
+                isValid = false;
+            } else {
+                mobileError.textContent = '';
+            }
+
+            if (isValid) {
+                popupContent.innerHTML = `
+                    First Name: ${firstName}<br>
+                    Last Name: ${lastName}<br>
+                    Date of Birth: ${dob}<br>
+                    Country: ${country}<br>
+                    Gender: ${gender.join(", ")}<br>
+                    Profession: ${profession}<br>
+                    Email: ${email}<br>
+                    Mobile Number: ${mobile}
+                `;
+                popup.style.display = 'block';
+            }
+        });
+
+        resetBtn.addEventListener('click', function () {
+            form.reset();
+            const errorMessages = form.getElementsByClassName('error-message');
+            for (let i = 0; i < errorMessages.length; i++) {
+                errorMessages[i].textContent = '';
+            }
+            popup.style.display = 'none';
+        });
+
+        closePopup.addEventListener('click', function () {
+            popup.style.display = 'none';
+            form.reset();
+        });
+    </script>
+</body>
+</html>
